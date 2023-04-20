@@ -4,7 +4,7 @@ namespace BreweryWholesale.Infrastructure.Repository
 {
     public interface IBreweryRepository
     {
-        Task<Brewery> GetAllBeersByBreweryName(string breweryName);
+        Task<Brewery> GetAllBeersByBreweryNameAsync(string breweryName);
         Task<Brewery> GetBreweryByNameAsync(string breweryName);
     }
 

@@ -1,5 +1,6 @@
 ﻿using BreweryWholesale.Domain.Models.Contracts;
 using BreweryWholesale.Domain.Models.DBO;
+using BreweryWholesale.Domain.Models.DTO;
 using BreweryWholesale.Infrastructure.Repository;
 
 namespace BreweryWholesale.Infrastructure.Services
@@ -19,7 +20,7 @@ namespace BreweryWholesale.Infrastructure.Services
             try
             {
                 if (breweryName == string.Empty) return default;
-                var result = await _breweryRepository.GetAllBeersByBreweryName(breweryName);
+                var result = await _breweryRepository.GetAllBeersByBreweryNameAsync(breweryName);
                 return result;
             }
             catch (Exception e)
