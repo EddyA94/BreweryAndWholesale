@@ -7,5 +7,7 @@ namespace BreweryWholesale.Domain.Models.Contracts
     {
         Task<IEnumerable<Beer>> GetAllBeersAsync();
         Task AddBeerAsync(Beer_Dto beer_Dto);
+        Task DeleteBeerAsync(int beerId);
+        
     }
 }

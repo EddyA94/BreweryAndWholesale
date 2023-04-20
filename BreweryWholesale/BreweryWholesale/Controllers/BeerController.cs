@@ -2,6 +2,7 @@
 using BreweryWholesale.Domain.Models.DTO;
 using BreweryWholesale.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace BreweryWholesale.Api.Controllers
 {
@@ -43,6 +44,26 @@ namespace BreweryWholesale.Api.Controllers
             catch (CustomExceptions ex)
             {
                 return StatusCode(ex.StatusCode,ex.Message );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+        [HttpDelete]
+        [Route("DeleteBeerById")]
+        public async Task<IActionResult> DeleteBeerById([FromQuery][Required] int beerId)
+        {
+            try
+            {
+                await _beerService.DeleteBeerAsync(beerId);
+                return Ok();
+            }
+            catch (CustomExceptions ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
             }
             catch (Exception ex)
             {
