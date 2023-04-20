@@ -12,6 +12,5 @@ namespace BreweryWholesale.Domain.Models.DBO
         public float AlcoholContent { get; set; }
         public decimal Price { get; set; }
         public int BreweryID { get; set; }
-        public Brewery Brewery { get; set; }
     }
 }

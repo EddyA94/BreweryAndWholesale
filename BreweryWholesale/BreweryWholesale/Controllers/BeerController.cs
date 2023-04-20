@@ -13,7 +13,8 @@ namespace BreweryWholesale.Api.Controllers
             _beerService = beerService;
         }
 
-        [HttpGet(Name = "GetAllBeers")]
+        [HttpGet]
+        [Route("GetAllBeers")]
         public async Task<ActionResult> GetAllBeers()
         {
             var result = await _beerService.GetAllBeersAsync();

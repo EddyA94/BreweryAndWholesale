@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using BreweryWholesale.Domain.Models;
 using BreweryWholesale.Infrastructure;
-using Microsoft.AspNetCore.Hosting.Server;
 using BreweryWholesale.Infrastructure.Repository;
 using BreweryWholesale.Domain.Models.Contracts;
 using BreweryWholesale.Infrastructure.Services;
@@ -14,6 +12,8 @@ builder.Services.AddDbContext<BrewerWholesaleDBContext>(options => { options.Use
 
 builder.Services.AddScoped<IBeerRepository, BeerRepository>();
 builder.Services.AddTransient<IBeerService, BeerServices>();
+builder.Services.AddScoped<IBreweryRepository, BreweryRepository>();
+builder.Services.AddTransient<IBreweryService, BreweryServices>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
