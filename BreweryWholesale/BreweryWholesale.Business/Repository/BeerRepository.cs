@@ -16,10 +16,26 @@ namespace BreweryWholesale.Infrastructure.Repository
         {
             return await _context.Set<Beer>().ToListAsync();
         }
-        
+
+        public async Task<IEnumerable<Beer>> GetBeersByBreweryNameAndBeerNameAsync(int breweryID, string beerName)
+        {
+            return await _context.Set<Beer>().Where(W => W.BreweryID == breweryID && W.Name == beerName).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Beer>> GetBeersByBeerIdAsync(int beerId)
+        {
+            return await _context.Set<Beer>().Where(W => W.BeerID == beerId).ToListAsync();
+        }
+
         public async Task AddBeerAsync(Beer beer)
         {
             _context.Add<Beer>(beer);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteBeerAsync(Beer beer)
+        {
+            _context.Remove<Beer>(beer);
             await _context.SaveChangesAsync();
         }
     }

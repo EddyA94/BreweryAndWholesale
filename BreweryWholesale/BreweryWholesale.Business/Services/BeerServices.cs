@@ -59,5 +59,36 @@ namespace BreweryWholesale.Infrastructure.Services
             }
         }
 
+        public async Task<IEnumerable<Beer>> GetBeerByBreweryByIdAsync(int beerId)
+        {
+            try
+            {
+                var result = await _beerRepository.GetBeersByBeerIdAsync(beerId);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public async Task DeleteBeerAsync(int beerId)
+        {
+            try
+            {
+                Beer? existingBeer = GetBeerByBreweryByIdAsync(beerId).Result.FirstOrDefault();
+                if (existingBeer == null)
+                {
+                    throw new CustomExceptions("Beer Does not exist", (int)System.Net.HttpStatusCode.NotFound);
+                }
+
+                await _beerRepository.DeleteBeerAsync(existingBeer);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
     }
 }
