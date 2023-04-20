@@ -1,5 +1,7 @@
 ﻿using BreweryWholesale.Domain.Models.Contracts;
 using BreweryWholesale.Domain.Models.DBO;
+using BreweryWholesale.Domain.Models.DTO;
+using BreweryWholesale.Infrastructure.Exceptions;
 using BreweryWholesale.Infrastructure.Repository;
 
 namespace BreweryWholesale.Infrastructure.Services
@@ -7,10 +9,13 @@ namespace BreweryWholesale.Infrastructure.Services
     public class BeerServices : IBeerService
     {
         private readonly IBeerRepository _beerRepository;
+        private readonly IBreweryRepository _breweryRepository;
 
-        public BeerServices(IBeerRepository beerRepository)
+        public BeerServices(IBeerRepository beerRepository, IBreweryRepository breweryRepository)
         {
             _beerRepository = beerRepository;
+            _breweryRepository = breweryRepository;
+
         }
 
         public async Task<IEnumerable<Beer>> GetAllBeersAsync()
@@ -25,5 +30,34 @@ namespace BreweryWholesale.Infrastructure.Services
                 throw;
             }
         }
+
+        public async Task AddBeerAsync(Beer_Dto beer_Dto)
+        {
+            try
+            {
+                var brewery = await _breweryRepository.GetAllBeersByBreweryNameAsync(beer_Dto.BreweryName);
+                if (brewery == null)
+                {
+                    throw new CustomExceptions("Brewery Does not Exists", (int)System.Net.HttpStatusCode.NotFound);
+                }
+                if (brewery.Beers?.Where(W => W.Name == beer_Dto.BeerName).Count() > 0)
+                {
+                    throw new CustomExceptions("Beer already Exists For Brewery", (int)System.Net.HttpStatusCode.Conflict);
+                }
+                Beer newBeer = new Beer
+                {
+                    Name = beer_Dto.BeerName,
+                    BreweryID = brewery.BrewerID,
+                    AlcoholContent = beer_Dto.AlcoholContent,
+                    Price = beer_Dto.Price
+                };
+                await _beerRepository.AddBeerAsync(newBeer);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
     }
 }

@@ -16,5 +16,11 @@ namespace BreweryWholesale.Infrastructure.Repository
         {
             return await _context.Set<Beer>().ToListAsync();
         }
+        
+        public async Task AddBeerAsync(Beer beer)
+        {
+            _context.Add<Beer>(beer);
+            await _context.SaveChangesAsync();
+        }
     }
 }
