@@ -8,6 +8,7 @@ namespace BreweryWholesale.Domain.Models.DTO
         public int WholesalerId { get; set; }
         [Required]
         public int BeerId { get; set; }
+        [Required]
         public int Quantity { get; set; }
     }
 }
