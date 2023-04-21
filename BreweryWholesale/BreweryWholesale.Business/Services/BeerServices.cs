@@ -24,7 +24,7 @@ namespace BreweryWholesale.Infrastructure.Services
                 var result = await _beerRepository.GetAllBeersAsync();
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
@@ -52,7 +52,7 @@ namespace BreweryWholesale.Infrastructure.Services
                 };
                 await _beerRepository.AddBeerAsync(newBeer);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
@@ -65,7 +65,7 @@ namespace BreweryWholesale.Infrastructure.Services
                 var result = await _beerRepository.GetBeersByBeerIdAsync(beerId);
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
@@ -83,7 +83,7 @@ namespace BreweryWholesale.Infrastructure.Services
 
                 await _beerRepository.DeleteBeerAsync(existingBeer);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }

@@ -59,7 +59,7 @@ namespace BreweryWholesale.Infrastructure.Services
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }

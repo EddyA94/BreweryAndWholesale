@@ -21,7 +21,7 @@ namespace BreweryWholesale.Infrastructure.Services
                 var result = await _breweryRepository.GetAllBeersByBreweryNameAsync(breweryName);              
                 return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
