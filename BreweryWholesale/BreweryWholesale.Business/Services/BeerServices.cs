@@ -9,13 +9,12 @@ namespace BreweryWholesale.Infrastructure.Services
     public class BeerServices : IBeerService
     {
         private readonly IBeerRepository _beerRepository;
-        private readonly IBreweryRepository _breweryRepository;
+        private readonly IBreweryService _breweryService;
 
-        public BeerServices(IBeerRepository beerRepository, IBreweryRepository breweryRepository)
+        public BeerServices(IBeerRepository beerRepository, IBreweryService breweryService)
         {
             _beerRepository = beerRepository;
-            _breweryRepository = breweryRepository;
-
+            _breweryService = breweryService;
         }
 
         public async Task<IEnumerable<Beer>> GetAllBeersAsync()
@@ -35,7 +34,7 @@ namespace BreweryWholesale.Infrastructure.Services
         {
             try
             {
-                var brewery = await _breweryRepository.GetAllBeersByBreweryNameAsync(beer_Dto.BreweryName);
+                var brewery = await _breweryService.GetAllBeersByBreweryNameAsync(beer_Dto.BreweryName);
                 if (brewery == null)
                 {
                     throw new CustomExceptions("Brewery Does not Exists", (int)System.Net.HttpStatusCode.NotFound);

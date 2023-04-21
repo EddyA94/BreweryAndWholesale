@@ -2,7 +2,6 @@
 using BreweryWholesale.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 
 namespace BreweryWholesale.Api.Controllers
 {
@@ -22,7 +21,11 @@ namespace BreweryWholesale.Api.Controllers
         {
             try
             {
-                var result = await _breweryService.GetBeersByBreweryName(BreweryName);
+                var result = await _breweryService.GetAllBeersByBreweryNameAsync(BreweryName);
+                if (result != null && result.Beers.Count == 0)
+                {
+                    throw new CustomExceptions("Brewery Do not have any beers", (int)System.Net.HttpStatusCode.NotFound);
+                }
                 if (result == null)
                 {
                     return NotFound("No Beers Exists for brewery or brewery does not exist");
@@ -37,7 +40,6 @@ namespace BreweryWholesale.Api.Controllers
             {
                 throw;
             }
-
         }
     }
 }
