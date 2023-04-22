@@ -63,6 +63,10 @@ namespace BreweryWholesale.Infrastructure.Services
             try
             {
                 var result = await _beerRepository.GetBeersByBeerIdAsync(beerId);
+                if (result == null)
+                {
+                    throw new CustomExceptions("Beer Does not exist", (int)System.Net.HttpStatusCode.NotFound);
+                }
                 return result;
             }
             catch (Exception)
@@ -75,13 +79,11 @@ namespace BreweryWholesale.Infrastructure.Services
         {
             try
             {
-                Beer? existingBeer = GetBeerByBreweryByIdAsync(beerId).Result.FirstOrDefault();
-                if (existingBeer == null)
+                var existingBeer = GetBeerByBreweryByIdAsync(beerId).Result.FirstOrDefault();
+                if (existingBeer != null)
                 {
-                    throw new CustomExceptions("Beer Does not exist", (int)System.Net.HttpStatusCode.NotFound);
+                    await _beerRepository.DeleteBeerAsync(existingBeer);
                 }
-
-                await _beerRepository.DeleteBeerAsync(existingBeer);
             }
             catch (Exception)
             {

@@ -18,7 +18,19 @@ namespace BreweryWholesale.Infrastructure.Repository
             {
                 return await _context.Set<WholesalerStock>().Where(W => W.WholesalerID == wholesalerId && W.BeerID == beerId).FirstOrDefaultAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<WholesalerStock?> GetWholeSalerStockByStockIdAsync(int WholesalerStockId)
+        {
+            try
+            {
+                return await _context.Set<WholesalerStock>().Where(W => W.WholesalerStockID == WholesalerStockId).FirstOrDefaultAsync();
+            }
+            catch (Exception)
             {
                 throw;
             }

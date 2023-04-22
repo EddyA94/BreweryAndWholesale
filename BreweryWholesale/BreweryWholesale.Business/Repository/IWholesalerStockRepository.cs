@@ -7,5 +7,7 @@ namespace BreweryWholesale.Infrastructure.Repository
         Task<WholesalerStock?> GetWholeSalerStockByIdandBeerIdAsync(int wholesalerId, int beerId);
 
         Task UpsertWholeSalerStockAsync(WholesalerStock wholesalerStock);
+
+        Task<WholesalerStock?> GetWholeSalerStockByStockIdAsync(int WholesalerStockId);
     }
 }
