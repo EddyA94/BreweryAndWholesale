@@ -18,6 +18,11 @@ namespace BreweryWholesale.Infrastructure.Services
             return await _wholesalerStockRepository.GetWholeSalerStockByIdandBeerIdAsync(wholesalerId, beerId);
         }
 
+        public async Task<WholesalerStock?> GetWholeSalerStockByStockId(int WholesalerStockId)
+        {
+            return await _wholesalerStockRepository.GetWholeSalerStockByStockId(WholesalerStockId);
+        }
+
         public async Task UpsertWholesaleStockAsync(WholesalerStock wholesalerStock)
         {
             await _wholesalerStockRepository.UpsertWholeSalerStockAsync(wholesalerStock);
