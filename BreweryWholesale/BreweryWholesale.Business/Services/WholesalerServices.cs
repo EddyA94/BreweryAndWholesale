@@ -19,7 +19,7 @@ namespace BreweryWholesale.Infrastructure.Services
         {
             try
             {
-                var wholesalerStock = await _wholesalerStockService.GetWholeSalerStockByStockId(wholesalerStock_Dto.WholesalerStockId);
+                var wholesalerStock = await _wholesalerStockService.GetWholeSalerStockByStockIdAsync(wholesalerStock_Dto.WholesalerStockId);
                 if (wholesalerStock == null)
                 {
                     throw new CustomExceptions("wholesalerStock Id Does not Exist", (int)System.Net.HttpStatusCode.NotFound);

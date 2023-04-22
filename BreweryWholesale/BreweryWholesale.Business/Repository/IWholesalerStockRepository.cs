@@ -8,6 +8,6 @@ namespace BreweryWholesale.Infrastructure.Repository
 
         Task UpsertWholeSalerStockAsync(WholesalerStock wholesalerStock);
 
-        Task<WholesalerStock?> GetWholeSalerStockByStockId(int WholesalerStockId);
+        Task<WholesalerStock?> GetWholeSalerStockByStockIdAsync(int WholesalerStockId);
     }
 }
