@@ -15,13 +15,21 @@ builder.Services.AddDbContext<BrewerWholesaleDBContext>(options => { options.Use
 
 builder.Services.AddScoped<IBeerRepository, BeerRepository>();
 builder.Services.AddTransient<IBeerService, BeerServices>();
+
 builder.Services.AddScoped<IBreweryRepository, BreweryRepository>();
 builder.Services.AddTransient<IBreweryService, BreweryServices>();
+
 builder.Services.AddScoped<IWholesalerStockRepository, WholesalerStockRepository>();
 builder.Services.AddTransient<IWholesalerStockService, WholesalerStockServices>();
+
 builder.Services.AddScoped<ISaleRepository, SaleRepository>();
 builder.Services.AddTransient<ISaleService, SaleServices>();
+
 builder.Services.AddScoped<IWholesalerService, WholesalerServices>();
+builder.Services.AddScoped<IWholesalerRepository, WholesalerRepository>();
+
+builder.Services.AddScoped<IQuoteService, QuoteServices>();
+
 builder.Services.AddScoped<ITransactionUnitOfWork, TransactionUnitOfWork>();
 builder.Services.AddScoped<ExceptionHandler>();
 

@@ -6,6 +6,8 @@ namespace BreweryWholesale.Domain.Models.Contracts
     public interface IBeerService
     {
         Task<IEnumerable<Beer>> GetAllBeersAsync();
+        Task<Beer> GetBeerByIdAsync(int beerId);
+        Task<IEnumerable<Beer>> GetBeerByIdsAsync(IEnumerable<int> beerId);
         Task AddBeerAsync(Beer_Dto beer_Dto);
         Task DeleteBeerAsync(int beerId);
     }

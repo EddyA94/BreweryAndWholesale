@@ -1,8 +1,10 @@
 ﻿using BreweryWholesale.Domain.Models.Contracts;
 using BreweryWholesale.Domain.Models.DBO;
 using BreweryWholesale.Domain.Models.DTO;
+using BreweryWholesale.Infrastructure.Exceptions;
 using BreweryWholesale.Infrastructure.Repository;
 using BreweryWholesale.Infrastructure.UnitsOfWork;
+using System.Drawing;
 
 namespace BreweryWholesale.Infrastructure.Services
 {
@@ -29,17 +31,24 @@ namespace BreweryWholesale.Infrastructure.Services
                     WholesalerID = sale_Dto.WholesalerId,
                     Quantity = sale_Dto.Quantity
                 };
-
-                var wholeSalerStock = await _wholesalerStockService.GetStockByWholesalerIdAndBeerIdAsync(sale_Dto.WholesalerId, sale_Dto.BeerId);
+                var wholeSalerStock = await _wholesalerStockService.GetStockByWholesalerIdAndBeerIdAsync(sale_Dto.WholesalerId, new List<int> { sale_Dto.BeerId });
                 int wholeSalerStockQuantity = 0;
-                if (wholeSalerStock != null)
+                int wholesalerStockId = 0;
+
+                if (wholeSalerStock.FirstOrDefault() != null)
                 {
-                    wholeSalerStockQuantity += wholeSalerStock.StockQuantity;
+                    wholeSalerStockQuantity += wholeSalerStock.First().StockQuantity;
+                    wholesalerStockId = wholeSalerStock.First().WholesalerStockID;
+                }
+
+                if (sale_Dto.Quantity <= 0)
+                {
+                    throw new CustomExceptions("Quantity cannot be equal or less than 0", (int)System.Net.HttpStatusCode.BadRequest);
                 }
 
                 WholesalerStock wholesalerStock = new WholesalerStock()
                 {
-                    WholesalerStockID = wholeSalerStock != null ? wholeSalerStock.WholesalerStockID : 0,
+                    WholesalerStockID = wholesalerStockId,
                     BeerID = sale_Dto.BeerId,
                     WholesalerID = sale_Dto.WholesalerId,
                     StockQuantity = sale_Dto.Quantity + wholeSalerStockQuantity,

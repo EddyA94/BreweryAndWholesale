@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BreweryWholesale.Api.Controllers
 {
+
+    [Route("api/[controller]")]
+    [ApiController]
     public class WholesalerController : Controller
     {
         private readonly IWholesalerService _wholesalerService;

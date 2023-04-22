@@ -58,7 +58,7 @@ namespace BreweryWholesale.Infrastructure.Services
             }
         }
 
-        public async Task<IEnumerable<Beer>> GetBeerByBreweryByIdAsync(int beerId)
+        public async Task<Beer> GetBeerByIdAsync(int beerId)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace BreweryWholesale.Infrastructure.Services
         {
             try
             {
-                var existingBeer = GetBeerByBreweryByIdAsync(beerId).Result.FirstOrDefault();
+                var existingBeer = GetBeerByIdAsync(beerId).Result;
                 if (existingBeer != null)
                 {
                     await _beerRepository.DeleteBeerAsync(existingBeer);
@@ -91,5 +91,14 @@ namespace BreweryWholesale.Infrastructure.Services
             }
         }
 
+        public async Task<IEnumerable<Beer>> GetBeerByIdsAsync(IEnumerable<int> beerId)
+        {
+            var result = await _beerRepository.GetBeersByIdsAsync(beerId);
+            if (result == null)
+            {
+                throw new CustomExceptions("Beer Does not exist", (int)System.Net.HttpStatusCode.NotFound);
+            }
+            return result;
+        }
     }
 }
