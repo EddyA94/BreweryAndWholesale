@@ -26,7 +26,6 @@ namespace BreweryWholesale.Api.Controllers
             return Ok(result);
         }
 
-
         [HttpPost]
         [Route("AddNewBeer")]
         public async Task<IActionResult> AddNewBeer([FromBody] Beer_Dto beer_Dto)

@@ -13,14 +13,10 @@ namespace BreweryWholesale.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task<Brewery> GetAllBeersByBreweryNameAsync(string breweryName)
+        public async Task<Brewery?> GetAllBeersByBreweryNameAsync(string breweryName)
         {
             var brewery = await GetBreweryByNameAsync(breweryName);
-            var res = await _context.Set<Brewery>().Include(a => a.Beers).Where(W => W.BrewerID == brewery.BrewerID).FirstAsync();
-            if (res.Beers.Count == 0)
-            {
-                throw new CustomExceptions("Brewery Do not have any beers", (int)System.Net.HttpStatusCode.NotFound);
-            }
+            var res = await _context.Set<Brewery>().Include(a => a.Beers).Where(W => W.BrewerID == brewery.BrewerID).FirstOrDefaultAsync();         
             return res;
         }
 
