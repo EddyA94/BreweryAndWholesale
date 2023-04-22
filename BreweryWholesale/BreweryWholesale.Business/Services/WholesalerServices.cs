@@ -1,5 +1,4 @@
 ﻿using BreweryWholesale.Domain.Models.Contracts;
-using BreweryWholesale.Domain.Models.DBO;
 using BreweryWholesale.Domain.Models.DTO;
 using BreweryWholesale.Infrastructure.Exceptions;
 
@@ -19,6 +18,10 @@ namespace BreweryWholesale.Infrastructure.Services
         {
             try
             {
+                if (wholesalerStock_Dto.StockQuantity < 0) 
+                {
+                    throw new CustomExceptions("Quantity cannot be less than 0", (int)System.Net.HttpStatusCode.BadRequest);
+                }
                 var wholesalerStock = await _wholesalerStockService.GetWholeSalerStockByStockIdAsync(wholesalerStock_Dto.WholesalerStockId);
                 if (wholesalerStock == null)
                 {
