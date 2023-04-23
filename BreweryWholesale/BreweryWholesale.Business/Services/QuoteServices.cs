@@ -50,9 +50,9 @@ namespace BreweryWholesale.Infrastructure.Services
                 throw new CustomExceptions("The following beers '" + string.Join(", ", noneExistingBeers.Select(S => S)) + "' do not exist in the system", (int)System.Net.HttpStatusCode.BadRequest);
             }
 
-            var wholesalerStocks = await _wholesalerStockService.GetStockByWholesalerIdAndBeerIdAsync(quoteRequest_Dto.WholesalerId, requestedBeerIds);
+            var wholesalerStocks = _wholesalerStockService.GetStockByWholesalerIdAndBeerIdAsync(quoteRequest_Dto.WholesalerId, requestedBeerIds);
             var beersSoldByWholesaler = new List<int>();
-            foreach (var wholesalerStock in wholesalerStocks)
+            await foreach (var wholesalerStock in wholesalerStocks)
             {
                 var requestedItem = quoteRequest_Dto.OrderItems.Where(W => W.BeerId == wholesalerStock.BeerID).FirstOrDefault();
                 var beer = requestedBeers.Where(W => W.BeerID == wholesalerStock.BeerID).First();

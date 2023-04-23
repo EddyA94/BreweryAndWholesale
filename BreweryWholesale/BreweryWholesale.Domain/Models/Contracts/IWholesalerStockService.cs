@@ -5,7 +5,7 @@ namespace BreweryWholesale.Domain.Models.Contracts
     public interface IWholesalerStockService
     {
         Task<WholesalerStock> GetWholeSalerStockByStockIdAsync(int WholesalerStockId);
-        Task<IEnumerable<WholesalerStock>> GetStockByWholesalerIdAndBeerIdAsync(int wholesalerId, List<int> BeerId);
+        IAsyncEnumerable<WholesalerStock> GetStockByWholesalerIdAndBeerIdAsync(int wholesalerId, List<int> beerId);
         Task UpsertWholesaleStockAsync(WholesalerStock wholesalerStock);
     }
 }
