@@ -34,6 +34,10 @@ namespace BreweryWholesale.Infrastructure.Services
         {
             try
             {
+                if (string.IsNullOrEmpty(beer_Dto.BreweryName))
+                {
+                    throw new CustomExceptions("Brewery Name Cannot be Empty", (int)System.Net.HttpStatusCode.BadRequest);
+                }
                 var brewery = await _breweryService.GetAllBeersByBreweryNameAsync(beer_Dto.BreweryName) ?? throw new CustomExceptions("Brewery Does not Exists", (int)System.Net.HttpStatusCode.NotFound);
                 if (brewery.Beers?.Where(W => W.Name == beer_Dto.BeerName).Count() > 0)
                 {

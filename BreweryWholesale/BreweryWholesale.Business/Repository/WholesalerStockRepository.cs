@@ -12,15 +12,12 @@ namespace BreweryWholesale.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<WholesalerStock>>  GetWholeSalerStockByIdandBeerIdAsync(int wholesalerId, List<int> beerId)
+    
+        public async IAsyncEnumerable<WholesalerStock> GetWholeSalerStockByIdandBeerIdAsync(int wholesalerId, List<int> beerId)
         {
-            try
+            await foreach (WholesalerStock wholesalerStock in _context.Set<WholesalerStock>().Where(W => W.WholesalerID == wholesalerId && beerId.Contains(W.BeerID)).AsAsyncEnumerable())
             {
-                return await _context.Set<WholesalerStock>().Where(W => W.WholesalerID == wholesalerId && beerId.Contains(W.BeerID)).ToListAsync();
-            }
-            catch (Exception)
-            {
-                throw;
+                yield return wholesalerStock;
             }
         }
 

@@ -4,7 +4,7 @@ namespace BreweryWholesale.Infrastructure.Repository
 {
     public interface IWholesalerStockRepository
     {
-        Task<IEnumerable<WholesalerStock>> GetWholeSalerStockByIdandBeerIdAsync(int wholesalerId, List<int> beerId);
+        IAsyncEnumerable<WholesalerStock> GetWholeSalerStockByIdandBeerIdAsync(int wholesalerId, List<int> beerId);
 
         Task UpsertWholeSalerStockAsync(WholesalerStock wholesalerStock);
 

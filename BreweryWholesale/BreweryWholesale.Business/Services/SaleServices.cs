@@ -31,14 +31,15 @@ namespace BreweryWholesale.Infrastructure.Services
                     WholesalerID = sale_Dto.WholesalerId,
                     Quantity = sale_Dto.Quantity
                 };
-                var wholeSalerStock = await _wholesalerStockService.GetStockByWholesalerIdAndBeerIdAsync(sale_Dto.WholesalerId, new List<int> { sale_Dto.BeerId });
                 int wholeSalerStockQuantity = 0;
                 int wholesalerStockId = 0;
-
-                if (wholeSalerStock.FirstOrDefault() != null)
+                await foreach (var wholeSalerStock in _wholesalerStockService.GetStockByWholesalerIdAndBeerIdAsync(sale_Dto.WholesalerId, new List<int> { sale_Dto.BeerId }))
                 {
-                    wholeSalerStockQuantity += wholeSalerStock.First().StockQuantity;
-                    wholesalerStockId = wholeSalerStock.First().WholesalerStockID;
+                    if (wholeSalerStock != null)
+                    {
+                        wholeSalerStockQuantity += wholeSalerStock.StockQuantity;
+                        wholesalerStockId = wholeSalerStock.WholesalerStockID;
+                    }
                 }
 
                 if (sale_Dto.Quantity <= 0)
@@ -66,7 +67,6 @@ namespace BreweryWholesale.Infrastructure.Services
                     await _transactionUnitOfWork.RollbackTransactionAsync();
                     throw;
                 }
-
             }
             catch (Exception)
             {

@@ -7,6 +7,6 @@ namespace BreweryWholesale.Domain.Models.DTO
         [Required]
         public int WholesalerId { get; set; }
         [Required]
-        public List<OrderItem_Dto> OrderItems { get; set; }
+        public List<OrderItem_Dto>? OrderItems { get; set; }
     }
 }

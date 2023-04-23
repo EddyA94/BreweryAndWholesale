@@ -10,7 +10,7 @@ namespace BreweryWholesale.Domain.Models.DBO
         public int WholesalerID { get; set; }
         public string Name { get; set; }
 
-        public  ICollection<WholesalerStock> WholesalerStock { get; set; }
-        public  ICollection<Sale> Sales { get; set; }
+        public virtual ICollection<WholesalerStock>? WholesalerStock { get; set; }
+        public virtual ICollection<Sale>? Sales { get; set; }
     }
 }

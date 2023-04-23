@@ -5,6 +5,7 @@ using BreweryWholesale.Domain.Models.Contracts;
 using BreweryWholesale.Infrastructure.Services;
 using BreweryWholesale.Infrastructure.UnitsOfWork;
 using BreweryWholesale.Api.Middleware;
+using Microsoft.EntityFrameworkCore.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IWholesalerRepository, WholesalerRepository>();
 builder.Services.AddScoped<IQuoteService, QuoteServices>();
 
 builder.Services.AddScoped<ITransactionUnitOfWork, TransactionUnitOfWork>();
+
 builder.Services.AddScoped<ExceptionHandler>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

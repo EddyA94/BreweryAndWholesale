@@ -12,8 +12,8 @@ namespace BreweryWholesale.Domain.Models.DBO
         public int BeerID { get; set; }
         public int StockQuantity { get; set; }
 
-        public Wholesaler Wholesaler { get; set; }
-        public Beer Beer { get; set; }
+        public virtual Wholesaler? Wholesaler { get; set; }
+        public virtual Beer? Beer { get; set; }
         
     }
 }

@@ -18,7 +18,8 @@ namespace BreweryWholesale.Api.Middleware
                 var errorResponse = new ErrorResponse
                 {
                     ErrorCode = "500",
-                    Message = "An error occurred while processing your request."
+                    Message = "An error occurred while processing your request.",
+                    InnerMessage = ex.Message
                 };
 
                 var json = JsonConvert.SerializeObject(errorResponse);
@@ -34,7 +35,8 @@ namespace BreweryWholesale.Api.Middleware
 
     public class ErrorResponse
     {
-        public string ErrorCode { get; set; }
-        public string Message { get; set; }
+        public string? ErrorCode { get; set; }
+        public string? Message { get; set; }
+        public string? InnerMessage { get; set; }
     }
 }

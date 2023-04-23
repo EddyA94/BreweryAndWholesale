@@ -17,9 +17,8 @@ namespace BreweryWholesale.Infrastructure.Services
         {
             try
             {
-                if (breweryName == string.Empty) return default;
                 var result = await _breweryRepository.GetAllBeersByBreweryNameAsync(breweryName);              
-                return result;
+                return result ?? throw new CustomExceptions("Brewery Does not Exists", (int)System.Net.HttpStatusCode.NotFound);
             }
             catch (Exception)
             {
