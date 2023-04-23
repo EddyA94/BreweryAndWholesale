@@ -1,4 +1,5 @@
 ﻿using BreweryWholesale.Domain.Models.Contracts;
+using BreweryWholesale.Domain.Models.DBO;
 using BreweryWholesale.Domain.Models.DTO;
 using BreweryWholesale.Infrastructure.Exceptions;
 
@@ -20,29 +21,26 @@ namespace BreweryWholesale.Infrastructure.Services
         public async Task<QuoteResponse_Dto> RequestQuoteAsync(QuoteRequest_Dto quoteRequest_Dto)
         {
             //Validations
-            //1- Check if Quote is Filled
-            if (quoteRequest_Dto == null)
-            {
-                throw new CustomExceptions("Invalid order", (int)System.Net.HttpStatusCode.BadRequest);
-            }
-            //2- Check if Order Is no empty
-            if (quoteRequest_Dto.OrderItems == null || quoteRequest_Dto.OrderItems.Count == 0)
-            {
-                throw new CustomExceptions("Order Cannot Be empty", (int)System.Net.HttpStatusCode.BadRequest);
-            }
-            //3- Check if Wholesaler exists in DB
-            if (!await _wholesalerService.IsWholesalerAvailableAsync(quoteRequest_Dto.WholesalerId))
-            {
-                throw new CustomExceptions("Wholsaler Does not Exist", (int)System.Net.HttpStatusCode.NotFound);
-            }
-            //4- Check if There are duplicated Items
-            if (quoteRequest_Dto.OrderItems.GroupBy(x => x.BeerId).Any(g => g.Count() > 1))
-            {
-                throw new CustomExceptions("Duplicates in order", (int)System.Net.HttpStatusCode.BadRequest);
-            }
-            //5- Check if numbers of beers order is greater than stock
+            await ValidateQuoteRequest(quoteRequest_Dto);
+
             var requestedBeerIds = quoteRequest_Dto.OrderItems.Select(S => S.BeerId).ToList();
             var requestedBeers = await _beerService.GetBeerByIdsAsync(quoteRequest_Dto.OrderItems.Select(S => S.BeerId).AsEnumerable());
+            var wholesalerStocks = _wholesalerStockService.GetStockByWholesalerIdAndBeerIdAsync(quoteRequest_Dto.WholesalerId, requestedBeerIds);
+
+            await ValidateWholesalerStock(requestedBeers, quoteRequest_Dto.OrderItems, wholesalerStocks, quoteRequest_Dto, requestedBeerIds);
+
+            //if all validation passes
+            decimal totalPrice = 0;
+            foreach (var requestedBeer in quoteRequest_Dto.OrderItems)
+            {
+                totalPrice += requestedBeer.Quantity * requestedBeers.Where(W => W.BeerID == requestedBeer.BeerId).First().Price;
+            }
+
+            return ApplyDiscounts(totalPrice, quoteRequest_Dto);
+        }
+
+        private async Task ValidateWholesalerStock(IEnumerable<Beer> requestedBeers, IList<OrderItem_Dto> orderItems, IAsyncEnumerable<WholesalerStock> wholesalerStocks, QuoteRequest_Dto quoteRequest_Dto, List<int> requestedBeerIds)
+        {
             //Check if all beers are in system
             var noneExistingBeers = requestedBeerIds.Except(requestedBeers.Select(S => S.BeerID));
             if (noneExistingBeers.Any())
@@ -50,7 +48,6 @@ namespace BreweryWholesale.Infrastructure.Services
                 throw new CustomExceptions("The following beers '" + string.Join(", ", noneExistingBeers.Select(S => S)) + "' do not exist in the system", (int)System.Net.HttpStatusCode.BadRequest);
             }
 
-            var wholesalerStocks = _wholesalerStockService.GetStockByWholesalerIdAndBeerIdAsync(quoteRequest_Dto.WholesalerId, requestedBeerIds);
             var beersSoldByWholesaler = new List<int>();
             await foreach (var wholesalerStock in wholesalerStocks)
             {
@@ -77,13 +74,10 @@ namespace BreweryWholesale.Infrastructure.Services
                 throw new CustomExceptions("The following beers '" + string.Join(", ", missingBeers.Select(S => S.Name)) + "' are not sold by the wholesaler", (int)System.Net.HttpStatusCode.BadRequest);
             }
 
-            //if all validation passes
-            var quoteResponse_Dto = new List<QuoteResponse_Dto>();
-            decimal totalPrice = 0;
-            foreach (var requestedBeer in quoteRequest_Dto.OrderItems)
-            {
-                totalPrice += requestedBeer.Quantity * requestedBeers.Where(W => W.BeerID == requestedBeer.BeerId).First().Price;
-            }
+        }
+
+        private QuoteResponse_Dto ApplyDiscounts(decimal totalPrice, QuoteRequest_Dto quoteRequest_Dto)
+        {
 
             //A 20 % discount is applied above 20 drinks
             if (quoteRequest_Dto.OrderItems.Sum(S => S.Quantity) > 20)
@@ -100,6 +94,33 @@ namespace BreweryWholesale.Infrastructure.Services
                 Price = totalPrice,
                 Summary = "no Discounts Applied, total price is " + totalPrice.ToString("0.00") + " (Excluding VAT)*"
             };
+        }
+
+        internal async Task ValidateQuoteRequest(QuoteRequest_Dto quoteRequest_Dto)
+        {
+            // Check if Quote is Filled
+            if (quoteRequest_Dto == null)
+            {
+                throw new CustomExceptions("Invalid order", (int)System.Net.HttpStatusCode.BadRequest);
+            }
+
+            // Check if Order Is no empty
+            if (quoteRequest_Dto.OrderItems == null || quoteRequest_Dto.OrderItems.Count == 0)
+            {
+                throw new CustomExceptions("Order Cannot Be empty", (int)System.Net.HttpStatusCode.BadRequest);
+            }
+
+            // Check if Wholesaler exists in DB
+            if (!await _wholesalerService.IsWholesalerAvailableAsync(quoteRequest_Dto.WholesalerId))
+            {
+                throw new CustomExceptions("Wholsaler Does not Exist", (int)System.Net.HttpStatusCode.NotFound);
+            }
+
+            // Check if There are duplicated Items
+            if (quoteRequest_Dto.OrderItems.GroupBy(x => x.BeerId).Any(g => g.Count() > 1))
+            {
+                throw new CustomExceptions("Duplicates in order", (int)System.Net.HttpStatusCode.BadRequest);
+            }
         }
 
         internal static QuoteResponse_Dto CalculateDiscountedPrice(decimal totalPrice, decimal discount)
