@@ -38,10 +38,6 @@ namespace BreweryWholesale.Infrastructure.Services
                     throw new CustomExceptions("Quantity cannot be less than 0", (int)System.Net.HttpStatusCode.BadRequest);
                 }
                 var wholesalerStock = await _wholesalerStockService.GetWholeSalerStockByStockIdAsync(wholesalerStock_Dto.WholesalerStockId);
-                if (wholesalerStock == null)
-                {
-                    throw new CustomExceptions("wholesalerStock Id Does not Exist", (int)System.Net.HttpStatusCode.NotFound);
-                }
                 wholesalerStock.StockQuantity = wholesalerStock_Dto.StockQuantity;
                 await _wholesalerStockService.UpsertWholesaleStockAsync(wholesalerStock);
             }

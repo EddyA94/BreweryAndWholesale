@@ -1,6 +1,6 @@
-﻿
-using BreweryWholesale.Domain.Models.Contracts;
+﻿using BreweryWholesale.Domain.Models.Contracts;
 using BreweryWholesale.Domain.Models.DBO;
+using BreweryWholesale.Infrastructure.Exceptions;
 using BreweryWholesale.Infrastructure.Repository;
 
 namespace BreweryWholesale.Infrastructure.Services
@@ -18,9 +18,10 @@ namespace BreweryWholesale.Infrastructure.Services
             return await _wholesalerStockRepository.GetWholeSalerStockByIdandBeerIdAsync(wholesalerId, beerId);
         }
 
-        public async Task<WholesalerStock?> GetWholeSalerStockByStockIdAsync(int WholesalerStockId)
+        public async Task<WholesalerStock> GetWholeSalerStockByStockIdAsync(int WholesalerStockId)
         {
-            return await _wholesalerStockRepository.GetWholeSalerStockByStockIdAsync(WholesalerStockId);
+            var wholesalerStock = await _wholesalerStockRepository.GetWholeSalerStockByStockIdAsync(WholesalerStockId);
+            return wholesalerStock ?? throw new CustomExceptions("wholesalerStock Id Does not Exist", (int)System.Net.HttpStatusCode.NotFound);
         }
 
         public async Task UpsertWholesaleStockAsync(WholesalerStock wholesalerStock)

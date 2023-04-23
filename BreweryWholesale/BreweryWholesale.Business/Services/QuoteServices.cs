@@ -26,7 +26,7 @@ namespace BreweryWholesale.Infrastructure.Services
                 throw new CustomExceptions("Invalid order", (int)System.Net.HttpStatusCode.BadRequest);
             }
             //2- Check if Order Is no empty
-            if (quoteRequest_Dto.OrderItems == null || quoteRequest_Dto.OrderItems.Count() == 0)
+            if (quoteRequest_Dto.OrderItems == null || quoteRequest_Dto.OrderItems.Count == 0)
             {
                 throw new CustomExceptions("Order Cannot Be empty", (int)System.Net.HttpStatusCode.BadRequest);
             }
@@ -67,12 +67,12 @@ namespace BreweryWholesale.Infrastructure.Services
                 }
             }
             //6- Check if All beers are sold by wholesaler
-            if (beersSoldByWholesaler.Count() == 0)
+            if (beersSoldByWholesaler.Count == 0)
             {
                 throw new CustomExceptions("None Of the requested beers are sold by this wholesaler", (int)System.Net.HttpStatusCode.BadRequest);
             }
             var missingBeers = await _beerService.GetBeerByIdsAsync(requestedBeerIds.Except(beersSoldByWholesaler).AsEnumerable());
-            if (missingBeers != null && missingBeers.Count() > 0)
+            if (missingBeers != null && missingBeers.Any())
             {
                 throw new CustomExceptions("The following beers '" + string.Join(", ", missingBeers.Select(S => S.Name)) + "' are not sold by the wholesaler", (int)System.Net.HttpStatusCode.BadRequest);
             }
@@ -88,26 +88,27 @@ namespace BreweryWholesale.Infrastructure.Services
             //A 20 % discount is applied above 20 drinks
             if (quoteRequest_Dto.OrderItems.Sum(S => S.Quantity) > 20)
             {
-                return calculateDiscountedPrice(totalPrice, 0.2m);
+                return CalculateDiscountedPrice(totalPrice, 0.2m);
             }
             //A 10 % discount is applied above 10 drinks
             if (quoteRequest_Dto.OrderItems.Sum(S => S.Quantity) > 10)
             {
-                return calculateDiscountedPrice(totalPrice, 0.1m);
+                return CalculateDiscountedPrice(totalPrice, 0.1m);
             }
             return new QuoteResponse_Dto()
             {
                 Price = totalPrice,
-                Summary = "no Discounts Applied"
+                Summary = "no Discounts Applied, total price is " + totalPrice.ToString("0.00") + " (Excluding VAT)*"
             };
         }
 
-        private QuoteResponse_Dto calculateDiscountedPrice(decimal totalPrice, decimal discount)
+        private static QuoteResponse_Dto CalculateDiscountedPrice(decimal totalPrice, decimal discount)
         {
+            decimal disountedPrice = totalPrice - (totalPrice * discount);
             return new QuoteResponse_Dto()
             {
-                Price = totalPrice - (totalPrice * discount),
-                Summary = "A " + discount * 100 + "% discount has been applied"
+                Price = disountedPrice,
+                Summary = "A " + discount * 100 + "% discount has been applied, total price is " + disountedPrice.ToString("0.00") + " (Excluding VAT)*"
             };
         }
     }

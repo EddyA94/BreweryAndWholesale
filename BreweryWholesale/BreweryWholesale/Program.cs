@@ -5,7 +5,6 @@ using BreweryWholesale.Domain.Models.Contracts;
 using BreweryWholesale.Infrastructure.Services;
 using BreweryWholesale.Infrastructure.UnitsOfWork;
 using BreweryWholesale.Api.Middleware;
-using BreweryWholesale.Domain.Models.DBO;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.

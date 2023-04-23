@@ -34,16 +34,12 @@ namespace BreweryWholesale.Infrastructure.Services
         {
             try
             {
-                var brewery = await _breweryService.GetAllBeersByBreweryNameAsync(beer_Dto.BreweryName);
-                if (brewery == null)
-                {
-                    throw new CustomExceptions("Brewery Does not Exists", (int)System.Net.HttpStatusCode.NotFound);
-                }
+                var brewery = await _breweryService.GetAllBeersByBreweryNameAsync(beer_Dto.BreweryName) ?? throw new CustomExceptions("Brewery Does not Exists", (int)System.Net.HttpStatusCode.NotFound);
                 if (brewery.Beers?.Where(W => W.Name == beer_Dto.BeerName).Count() > 0)
                 {
                     throw new CustomExceptions("Beer already Exists For Brewery", (int)System.Net.HttpStatusCode.Conflict);
                 }
-                Beer newBeer = new Beer
+                Beer newBeer = new()
                 {
                     Name = beer_Dto.BeerName,
                     BreweryID = brewery.BrewerID,
@@ -58,31 +54,14 @@ namespace BreweryWholesale.Infrastructure.Services
             }
         }
 
-        public async Task<Beer> GetBeerByIdAsync(int beerId)
-        {
-            try
-            {
-                var result = await _beerRepository.GetBeersByBeerIdAsync(beerId);
-                if (result == null)
-                {
-                    throw new CustomExceptions("Beer Does not exist", (int)System.Net.HttpStatusCode.NotFound);
-                }
-                return result;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public async Task DeleteBeerAsync(int beerId)
         {
             try
             {
-                var existingBeer = GetBeerByIdAsync(beerId).Result;
-                if (existingBeer != null)
+                var existingBeer = GetBeerByIdsAsync(new List<int> { beerId }).Result;
+                if (existingBeer != null && existingBeer.FirstOrDefault() != null)
                 {
-                    await _beerRepository.DeleteBeerAsync(existingBeer);
+                    await _beerRepository.DeleteBeerAsync(existingBeer.First());
                 }
             }
             catch (Exception)
@@ -94,11 +73,7 @@ namespace BreweryWholesale.Infrastructure.Services
         public async Task<IEnumerable<Beer>> GetBeerByIdsAsync(IEnumerable<int> beerId)
         {
             var result = await _beerRepository.GetBeersByIdsAsync(beerId);
-            if (result == null)
-            {
-                throw new CustomExceptions("Beer Does not exist", (int)System.Net.HttpStatusCode.NotFound);
-            }
-            return result;
+            return result ?? throw new CustomExceptions("Beer Does not exist", (int)System.Net.HttpStatusCode.NotFound);
         }
     }
 }
