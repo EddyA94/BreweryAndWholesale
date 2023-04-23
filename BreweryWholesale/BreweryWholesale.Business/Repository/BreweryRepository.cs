@@ -23,11 +23,7 @@ namespace BreweryWholesale.Infrastructure.Repository
         public async Task<Brewery> GetBreweryByNameAsync(string breweryName)
         {
             var res = await _context.Set<Brewery>().Where(W => W.Name == breweryName).FirstOrDefaultAsync();
-            if (res == null)
-            {
-                throw new CustomExceptions("Brewery Does not Exist", (int)System.Net.HttpStatusCode.NotFound);
-            }
-            return res;
+            return res ?? throw new CustomExceptions("Brewery Does not Exist", (int)System.Net.HttpStatusCode.NotFound);
         }
     }
 }

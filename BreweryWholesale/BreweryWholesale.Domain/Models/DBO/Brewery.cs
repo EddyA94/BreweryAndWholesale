@@ -9,6 +9,6 @@ namespace BreweryWholesale.Domain.Models.DBO
     {
         public int BrewerID { get; set; }
         public string Name { get; set; }
-        public ICollection<Beer> Beers { get; set; }
+        public virtual ICollection<Beer>? Beers { get; set; }
     }
 }
