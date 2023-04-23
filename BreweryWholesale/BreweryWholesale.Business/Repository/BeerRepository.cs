@@ -22,9 +22,9 @@ namespace BreweryWholesale.Infrastructure.Repository
             return await _context.Set<Beer>().Where(W => W.BreweryID == breweryID && W.Name == beerName).ToListAsync();
         }
 
-        public async Task<IEnumerable<Beer>> GetBeersByBeerIdAsync(int beerId)
+        public async Task<IEnumerable<Beer>> GetBeersByIdsAsync(IEnumerable<int> beerIds)
         {
-            return await _context.Set<Beer>().Where(W => W.BeerID == beerId).ToListAsync();
+            return await _context.Set<Beer>().Where(W => beerIds.Contains(W.BeerID)).ToListAsync();
         }
 
         public async Task AddBeerAsync(Beer beer)
