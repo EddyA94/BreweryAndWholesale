@@ -29,8 +29,9 @@ namespace BreweryWholesale.Infrastructure.Repository
 
         public async Task AddBeerAsync(Beer beer)
         {
-            _context.Add<Beer>(beer);
-            await _context.SaveChangesAsync();
+            await _context.Database.ExecuteSqlRawAsync(
+               @"INSERT INTO Beer (Name, AlcoholContent, Price, BreweryID)  VALUES ({0}, {1}, {2}, {3})",
+               beer.Name, beer.AlcoholContent, beer.Price, beer.BreweryID);
         }
 
         public async Task DeleteBeerAsync(Beer beer)

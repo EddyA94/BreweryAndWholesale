@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreweryWholesale.Api", "BreweryWholesale\BreweryWholesale.Api.csproj", "{049E7BA7-12EB-4A99-ADF2-5ADED59B7F0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesale.Api", "BreweryWholesale\BreweryWholesale.Api.csproj", "{049E7BA7-12EB-4A99-ADF2-5ADED59B7F0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreweryWholesale.Domain", "BreweryWholesale.Domain\BreweryWholesale.Domain.csproj", "{03E321AF-B333-485D-AD4D-84A5FF113EA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesale.Domain", "BreweryWholesale.Domain\BreweryWholesale.Domain.csproj", "{03E321AF-B333-485D-AD4D-84A5FF113EA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreweryWholesale.Infrastructure", "BreweryWholesale.Business\BreweryWholesale.Infrastructure.csproj", "{424BD186-825A-4133-B120-7C26DC631F8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreweryWholesale.Infrastructure", "BreweryWholesale.Business\BreweryWholesale.Infrastructure.csproj", "{424BD186-825A-4133-B120-7C26DC631F8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreweryWholesale.UnitTests", "BreweryWholesale.UnitTests\BreweryWholesale.UnitTests.csproj", "{338B7AF6-70CB-4CEA-8650-976E6D2F33ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{424BD186-825A-4133-B120-7C26DC631F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{424BD186-825A-4133-B120-7C26DC631F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{424BD186-825A-4133-B120-7C26DC631F8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{338B7AF6-70CB-4CEA-8650-976E6D2F33ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{338B7AF6-70CB-4CEA-8650-976E6D2F33ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{338B7AF6-70CB-4CEA-8650-976E6D2F33ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{338B7AF6-70CB-4CEA-8650-976E6D2F33ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

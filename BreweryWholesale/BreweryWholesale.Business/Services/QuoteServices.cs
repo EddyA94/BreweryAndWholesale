@@ -102,7 +102,7 @@ namespace BreweryWholesale.Infrastructure.Services
             };
         }
 
-        private static QuoteResponse_Dto CalculateDiscountedPrice(decimal totalPrice, decimal discount)
+        internal static QuoteResponse_Dto CalculateDiscountedPrice(decimal totalPrice, decimal discount)
         {
             decimal disountedPrice = totalPrice - (totalPrice * discount);
             return new QuoteResponse_Dto()
