@@ -73,12 +73,10 @@ namespace BreweryWholesale.Infrastructure.Services
             {
                 throw new CustomExceptions("The following beers '" + string.Join(", ", missingBeers.Select(S => S.Name)) + "' are not sold by the wholesaler", (int)System.Net.HttpStatusCode.BadRequest);
             }
-
         }
 
         private QuoteResponse_Dto ApplyDiscounts(decimal totalPrice, QuoteRequest_Dto quoteRequest_Dto)
         {
-
             //A 20 % discount is applied above 20 drinks
             if (quoteRequest_Dto.OrderItems.Sum(S => S.Quantity) > 20)
             {
