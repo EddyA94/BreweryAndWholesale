@@ -15,7 +15,7 @@ namespace BreweryWholesale.Infrastructure.Repository
 
         public async Task<Brewery?> GetAllBeersByBreweryIdAsync(int breweryId)
         {
-            var res = await _context.Set<Brewery>().Include(a => a.Beers).Where(W => W.BrewerID == breweryId).FirstOrDefaultAsync();
+            var res = await _context.Set<Brewery>().Include(a => a.Beers).FirstOrDefaultAsync(W => W.BrewerID == breweryId);
             return res;
         }
 

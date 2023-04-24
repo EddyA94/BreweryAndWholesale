@@ -28,7 +28,7 @@ namespace BreweryWholesale.Api.Controllers
 
         [HttpPost]
         [Route("AddNewBeer")]
-        public async Task<IActionResult> AddNewBeer([FromBody] Beer_Dto beer_Dto)
+        public async Task<IActionResult> AddNewBeer([FromBody][Required] Beer_Dto beer_Dto)
         {
             if (beer_Dto.BreweryId == 0 || beer_Dto.BeerName == string.Empty || beer_Dto.Price == 0)
             {

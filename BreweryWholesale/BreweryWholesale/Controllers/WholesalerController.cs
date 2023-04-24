@@ -2,6 +2,7 @@
 using BreweryWholesale.Domain.Models.DTO;
 using BreweryWholesale.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace BreweryWholesale.Api.Controllers
 {
@@ -19,7 +20,7 @@ namespace BreweryWholesale.Api.Controllers
 
         [HttpPost]
         [Route("UpdateWholesalerStockQuantity")]
-        public async Task<ActionResult> UpdateWholesalerStockQuantity([FromBody] WholesalerStock_Dto wholesalerStock_Dto)
+        public async Task<ActionResult> UpdateWholesalerStockQuantity([FromBody][Required] WholesalerStock_Dto wholesalerStock_Dto)
         {
             try
             {

@@ -14,7 +14,7 @@ namespace BreweryWholesale.Infrastructure.Repository
 
         public async Task<bool> IsWholesalerAvailableAsync(int wholesalerId)
         {
-            return await _context.Set<Wholesaler>().Where(W=>W.WholesalerID == wholesalerId).AnyAsync();
+            return await _context.Set<Wholesaler>().AnyAsync(W=>W.WholesalerID == wholesalerId);
         }
     }
 }
