@@ -25,7 +25,7 @@ namespace BreweryWholesale.Infrastructure.Repository
         {
             try
             {
-                return await _context.Set<WholesalerStock>().Where(W => W.WholesalerStockID == WholesalerStockId).FirstOrDefaultAsync();
+                return await _context.Set<WholesalerStock>().FindAsync(WholesalerStockId);
             }
             catch (Exception)
             {
@@ -37,7 +37,7 @@ namespace BreweryWholesale.Infrastructure.Repository
         {
             try
             {
-                var existingStock = await _context.WholesalerStock.FirstOrDefaultAsync(e => e.WholesalerStockID == wholesalerStock.WholesalerStockID);
+                var existingStock = await _context.WholesalerStock.FindAsync(wholesalerStock.WholesalerStockID);
                 if (existingStock == null)
                 {
                     _context.Add(wholesalerStock);
