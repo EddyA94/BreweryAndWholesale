@@ -30,7 +30,7 @@ namespace BreweryWholesale.Api.Controllers
         [Route("AddNewBeer")]
         public async Task<IActionResult> AddNewBeer([FromBody] Beer_Dto beer_Dto)
         {
-            if (beer_Dto.BreweryName == string.Empty || beer_Dto.BeerName == string.Empty || beer_Dto.Price == 0)
+            if (beer_Dto.BreweryId == 0 || beer_Dto.BeerName == string.Empty || beer_Dto.Price == 0)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "Missing Fields required (Brewery Name or Beer Name or Price)");
             }
