@@ -5,5 +5,6 @@ namespace BreweryWholesale.Domain.Models.Contracts
     public interface IBreweryService
     {
         Task<Brewery> GetAllBeersByBreweryNameAsync(string BreweryName);
+        Task<Brewery> GetAllBeersByBreweryIdAsync(int breweryId);
     }
 }

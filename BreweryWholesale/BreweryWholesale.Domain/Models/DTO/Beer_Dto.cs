@@ -7,7 +7,7 @@ namespace BreweryWholesale.Domain.Models.DTO
         [Required]
         public string BeerName { get; set; }
         [Required]
-        public string BreweryName { get; set; }
+        public int BreweryId { get; set; }
         public float AlcoholContent { get; set; }
         public decimal Price { get; set; }
     }

@@ -13,6 +13,12 @@ namespace BreweryWholesale.Infrastructure.Services
             _breweryRepository = BreweryRepository;
         }
 
+        public async Task<Brewery> GetAllBeersByBreweryIdAsync(int breweryId)
+        {
+            var result = await _breweryRepository.GetAllBeersByBreweryIdAsync(breweryId);
+            return result ?? throw new CustomExceptions("Brewery Does not Exists", (int)System.Net.HttpStatusCode.NotFound);
+        }
+
         public async Task<Brewery> GetAllBeersByBreweryNameAsync(string breweryName)
         {
             try
