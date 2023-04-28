@@ -16,7 +16,7 @@ namespace BreweryWholesale.Api.Controllers
             _saleService = saleService;
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpsertSalesToWolesaler")]
         public async Task<ActionResult> UpsertSalesToWolesaler([FromBody][Required] Sale_Dto sale_Dto)
         {
