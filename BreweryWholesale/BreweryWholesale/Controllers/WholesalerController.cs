@@ -18,7 +18,7 @@ namespace BreweryWholesale.Api.Controllers
             _wholesalerService = wholesalerService;
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpdateWholesalerStockQuantity")]
         public async Task<ActionResult> UpdateWholesalerStockQuantity([FromBody][Required] WholesalerStock_Dto wholesalerStock_Dto)
         {
