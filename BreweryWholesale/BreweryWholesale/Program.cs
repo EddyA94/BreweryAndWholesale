@@ -25,14 +25,14 @@ builder.Services.AddTransient<IWholesalerStockService, WholesalerStockServices>(
 builder.Services.AddScoped<ISaleRepository, SaleRepository>();
 builder.Services.AddTransient<ISaleService, SaleServices>();
 
-builder.Services.AddScoped<IWholesalerService, WholesalerServices>();
 builder.Services.AddScoped<IWholesalerRepository, WholesalerRepository>();
+builder.Services.AddTransient<IWholesalerService, WholesalerServices>();
 
-builder.Services.AddScoped<IQuoteService, QuoteServices>();
+builder.Services.AddTransient<IQuoteService, QuoteServices>();
 
-builder.Services.AddScoped<ITransactionUnitOfWork, TransactionUnitOfWork>();
+builder.Services.AddTransient<ITransactionUnitOfWork, TransactionUnitOfWork>();
 
-builder.Services.AddScoped<ExceptionHandler>();
+builder.Services.AddTransient<ExceptionHandler>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
