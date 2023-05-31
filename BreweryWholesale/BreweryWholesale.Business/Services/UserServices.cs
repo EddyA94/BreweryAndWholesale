@@ -4,6 +4,7 @@ using BreweryWholesale.Domain.Models.DTO;
 using BreweryWholesale.Infrastructure.Exceptions;
 using Microsoft.Extensions.Configuration;
 using BreweryWholesale.Infrastructure.Utilities;
+using BreweryWholesale.Infrastructure.Repository.TokenRepo;
 
 namespace BreweryWholesale.Infrastructure.Services
 {
@@ -11,11 +12,13 @@ namespace BreweryWholesale.Infrastructure.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly ITokenRepository _tokenRepository;
 
-        public UserServices(IUserRepository userRepository, IConfiguration configuration)
+        public UserServices(IUserRepository userRepository, IConfiguration configuration, ITokenRepository tokenRepository)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _tokenRepository = tokenRepository;
         }
 
         public async Task<string> LoginUser(User_Dto user_Dto)
@@ -36,8 +39,10 @@ namespace BreweryWholesale.Infrastructure.Services
             if (isPasswordValid)
             {
                 var tokenGenerator = new TokenGenerator(_configuration);
+                var token = tokenGenerator.GenerateToken(user_Dto.UserName);
+                await _tokenRepository.StoreToken(user_Dto.UserName, token);
                 // Do something with the generated token
-                return tokenGenerator.GenerateToken(user_Dto.UserName);
+                return token;
             }
             else
             {

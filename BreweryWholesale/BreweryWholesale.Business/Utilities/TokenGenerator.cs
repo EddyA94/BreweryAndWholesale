@@ -32,7 +32,7 @@ namespace BreweryWholesale.Infrastructure.Utilities
                 Subject = new ClaimsIdentity(new[]
                 {
                 new Claim(ClaimTypes.Name, username)
-            }),
+                }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = _configuration["JwtConfig:Issuer"],
                 Audience = _configuration["JwtConfig:Audience"],

@@ -9,6 +9,7 @@ using BreweryWholesale.Infrastructure.Repository.BreweryRepo;
 using BreweryWholesale.Infrastructure.Repository.SaleRepo;
 using BreweryWholesale.Infrastructure.Repository.WholesalerRepo;
 using BreweryWholesale.Infrastructure.Repository.UserRepo;
+using BreweryWholesale.Infrastructure.Repository.TokenRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -33,6 +34,7 @@ builder.Services.AddTransient<IWholesalerService, WholesalerServices>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserServices>();
+builder.Services.AddTransient<ITokenRepository, TokenRepository>();
 
 builder.Services.AddTransient<IQuoteService, QuoteServices>();
 
@@ -51,14 +53,16 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseMiddleware<ExceptionHandler>();
 }
+
+app.UseMiddleware<ExceptionHandler>();
+app.UseMiddleware<AuthenticationMiddleware>();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers();   
 
 using (var scope = app.Services.CreateScope())
 {
