@@ -1,7 +1,7 @@
 ﻿using BreweryWholesale.Domain.Models.DBO;
 using Microsoft.EntityFrameworkCore;
 
-namespace BreweryWholesale.Infrastructure.Repository
+namespace BreweryWholesale.Infrastructure.Repository.BeerRepo
 {
     public class BeerRepository : IBeerRepository
     {
@@ -36,7 +36,7 @@ namespace BreweryWholesale.Infrastructure.Repository
 
         public async Task DeleteBeerAsync(Beer beer)
         {
-            _context.Remove<Beer>(beer);
+            _context.Remove(beer);
             await _context.SaveChangesAsync();
         }
     }

@@ -14,6 +14,7 @@ namespace BreweryWholesale.Infrastructure
         public DbSet<Sale> Sale { get; set; }
         public DbSet<Wholesaler> Wholesaler { get; set; }
         public DbSet<WholesalerStock> WholesalerStock { get; set; }
+        public DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +23,7 @@ namespace BreweryWholesale.Infrastructure
             modelBuilder.Entity<Wholesaler>().HasKey(x => x.WholesalerID);
             modelBuilder.Entity<Sale>().HasKey(x => x.SaleID);
             modelBuilder.Entity<WholesalerStock>().HasKey(x => x.WholesalerStockID);
+            modelBuilder.Entity<User>().HasKey(x => x.UserId);
             base.OnModelCreating(modelBuilder);
         }
     }

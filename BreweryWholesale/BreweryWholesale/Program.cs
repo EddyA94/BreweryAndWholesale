@@ -1,17 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using BreweryWholesale.Infrastructure;
-using BreweryWholesale.Infrastructure.Repository;
 using BreweryWholesale.Domain.Models.Contracts;
 using BreweryWholesale.Infrastructure.Services;
 using BreweryWholesale.Infrastructure.UnitsOfWork;
 using BreweryWholesale.Api.Middleware;
-using Microsoft.EntityFrameworkCore.Storage;
+using BreweryWholesale.Infrastructure.Repository.BeerRepo;
+using BreweryWholesale.Infrastructure.Repository.BreweryRepo;
+using BreweryWholesale.Infrastructure.Repository.SaleRepo;
+using BreweryWholesale.Infrastructure.Repository.WholesalerRepo;
+using BreweryWholesale.Infrastructure.Repository.UserRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<BrewerWholesaleDBContext>(options => { options.UseSqlServer("Data Source=localhost;Initial Catalog=Brewery_new;Persist Security Info=True;User ID=admin;Password=admin;Encrypt=false"); options.LogTo(Console.WriteLine); });
+builder.Services.AddDbContext<BrewerWholesaleDBContext>(options => { options.UseSqlServer("Data Source=localhost,1433;Initial Catalog=Brewery;Persist Security Info=True;User ID=admin;Password=Admin1234;Encrypt=false"); options.LogTo(Console.WriteLine); });
 
 builder.Services.AddScoped<IBeerRepository, BeerRepository>();
 builder.Services.AddTransient<IBeerService, BeerServices>();
@@ -27,6 +30,9 @@ builder.Services.AddTransient<ISaleService, SaleServices>();
 
 builder.Services.AddScoped<IWholesalerRepository, WholesalerRepository>();
 builder.Services.AddTransient<IWholesalerService, WholesalerServices>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserServices>();
 
 builder.Services.AddTransient<IQuoteService, QuoteServices>();
 

@@ -2,7 +2,7 @@
 using BreweryWholesale.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace BreweryWholesale.Infrastructure.Repository
+namespace BreweryWholesale.Infrastructure.Repository.BreweryRepo
 {
     public class BreweryRepository : IBreweryRepository
     {
@@ -22,7 +22,7 @@ namespace BreweryWholesale.Infrastructure.Repository
         public async Task<Brewery?> GetAllBeersByBreweryNameAsync(string breweryName)
         {
             var brewery = await GetBreweryByNameAsync(breweryName);
-            var res = await _context.Set<Brewery>().Include(a => a.Beers).Where(W => W.BrewerID == brewery.BrewerID).FirstOrDefaultAsync();         
+            var res = await _context.Set<Brewery>().Include(a => a.Beers).Where(W => W.BrewerID == brewery.BrewerID).FirstOrDefaultAsync();
             return res;
         }
 

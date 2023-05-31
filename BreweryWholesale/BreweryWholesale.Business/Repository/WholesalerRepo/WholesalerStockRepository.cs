@@ -1,7 +1,7 @@
 ﻿using BreweryWholesale.Domain.Models.DBO;
 using Microsoft.EntityFrameworkCore;
 
-namespace BreweryWholesale.Infrastructure.Repository
+namespace BreweryWholesale.Infrastructure.Repository.WholesalerRepo
 {
     public class WholesalerStockRepository : IWholesalerStockRepository
     {
@@ -12,7 +12,7 @@ namespace BreweryWholesale.Infrastructure.Repository
             _context = context;
         }
 
-    
+
         public async IAsyncEnumerable<WholesalerStock> GetWholeSalerStockByIdandBeerIdAsync(int wholesalerId, List<int> beerId)
         {
             await foreach (WholesalerStock wholesalerStock in _context.Set<WholesalerStock>().Where(W => W.WholesalerID == wholesalerId && beerId.Contains(W.BeerID)).AsAsyncEnumerable())

@@ -1,4 +1,4 @@
-﻿namespace BreweryWholesale.Infrastructure.Repository
+﻿namespace BreweryWholesale.Infrastructure.Repository.WholesalerRepo
 {
     public interface IWholesalerRepository
     {

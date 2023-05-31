@@ -1,6 +1,6 @@
 ﻿using BreweryWholesale.Domain.Models.DBO;
 
-namespace BreweryWholesale.Infrastructure.Repository
+namespace BreweryWholesale.Infrastructure.Repository.SaleRepo
 {
     public interface ISaleRepository
     {

@@ -1,7 +1,7 @@
 ﻿using BreweryWholesale.Domain.Models.Contracts;
 using BreweryWholesale.Domain.Models.DBO;
 using BreweryWholesale.Infrastructure.Exceptions;
-using BreweryWholesale.Infrastructure.Repository;
+using BreweryWholesale.Infrastructure.Repository.WholesalerRepo;
 
 namespace BreweryWholesale.Infrastructure.Services
 {

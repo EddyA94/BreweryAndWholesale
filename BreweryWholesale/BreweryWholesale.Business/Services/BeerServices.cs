@@ -2,7 +2,7 @@
 using BreweryWholesale.Domain.Models.DBO;
 using BreweryWholesale.Domain.Models.DTO;
 using BreweryWholesale.Infrastructure.Exceptions;
-using BreweryWholesale.Infrastructure.Repository;
+using BreweryWholesale.Infrastructure.Repository.BeerRepo;
 
 namespace BreweryWholesale.Infrastructure.Services
 {

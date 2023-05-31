@@ -8,7 +8,7 @@ namespace BreweryWholesale.Domain.Models.DBO
     public class Beer
     {
         public int BeerID { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public float AlcoholContent { get; set; }
         public decimal Price { get; set; }
         public int BreweryID { get; set; }

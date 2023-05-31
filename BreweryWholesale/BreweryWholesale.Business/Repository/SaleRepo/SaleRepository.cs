@@ -1,6 +1,6 @@
 ﻿using BreweryWholesale.Domain.Models.DBO;
 
-namespace BreweryWholesale.Infrastructure.Repository
+namespace BreweryWholesale.Infrastructure.Repository.SaleRepo
 {
     public class SaleRepository : ISaleRepository
     {
@@ -13,7 +13,7 @@ namespace BreweryWholesale.Infrastructure.Repository
 
         public async Task UpsertSalesToWholeSalerAsync(Sale sale)
         {
-            _context.Add<Sale>(sale);
+            _context.Add(sale);
             await _context.SaveChangesAsync();
         }
     }
