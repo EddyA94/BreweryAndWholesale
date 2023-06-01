@@ -10,6 +10,7 @@ using BreweryWholesale.Infrastructure.Repository.SaleRepo;
 using BreweryWholesale.Infrastructure.Repository.WholesalerRepo;
 using BreweryWholesale.Infrastructure.Repository.UserRepo;
 using BreweryWholesale.Infrastructure.Repository.TokenRepo;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -35,6 +36,7 @@ builder.Services.AddTransient<IWholesalerService, WholesalerServices>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserServices>();
 builder.Services.AddTransient<ITokenRepository, TokenRepository>();
+builder.Services.AddTransient<ITokenService, TokenServices>();
 
 builder.Services.AddTransient<IQuoteService, QuoteServices>();
 
@@ -44,7 +46,34 @@ builder.Services.AddTransient<ExceptionHandler>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.OperationFilter<SwaggerAuthorizeCheckOperationFilter>();
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] {}
+            }
+        });
+});
 
 var app = builder.Build();
 

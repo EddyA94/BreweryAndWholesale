@@ -4,7 +4,6 @@ using BreweryWholesale.Domain.Models.DTO;
 using BreweryWholesale.Infrastructure.Exceptions;
 using BreweryWholesale.Infrastructure.Repository.SaleRepo;
 using BreweryWholesale.Infrastructure.UnitsOfWork;
-using System.Drawing;
 
 namespace BreweryWholesale.Infrastructure.Services
 {

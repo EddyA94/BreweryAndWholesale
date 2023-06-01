@@ -1,12 +1,16 @@
-﻿namespace BreweryWholesale.Api.Middleware
+﻿using BreweryWholesale.Domain.Models.Contracts;
+
+namespace BreweryWholesale.Api.Middleware
 {
     public class AuthenticationMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ITokenService _tokenService;
 
-        public AuthenticationMiddleware(RequestDelegate next)
+        public AuthenticationMiddleware(RequestDelegate next, ITokenService tokenService)
         {
             _next = next;
+            _tokenService = tokenService;
         }
 
         public async Task Invoke(HttpContext context)
@@ -19,7 +23,7 @@
             }
 
             // Perform authentication logic here
-            if (!IsAuthenticated(context))
+            if (!await IsAuthenticated(context))
             {
                 // Return unauthorized response
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -32,17 +36,25 @@
 
         private bool IsLoginEndpoint(HttpContext context)
         {
-            return context.Request.Path.StartsWithSegments("/api/login");
+            return context.Request.Path.StartsWithSegments("/api/User/LoginUser");
         }
 
-        private bool IsAuthenticated(HttpContext context)
+        private async Task<bool> IsAuthenticated(HttpContext context)
         {
-            // Perform your authentication logic here
-            // You can access the request headers, tokens, cookies, etc. to validate the authentication
-
-            // Return true if the user is authenticated; otherwise, return false
-            // For demonstration purposes, let's assume all requests are authenticated
-            return true;
+            var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            if (token == null)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return false;
+            }
+            if (await _tokenService.IsValid(token))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
